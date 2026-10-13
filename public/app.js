@@ -21,6 +21,10 @@ let moreOpen = false;
 let chartIndex = 11;
 let filters = defaultFilters();
 let numberFormat, locale;
+const params = new URLSearchParams(location.search);
+const embedded = params.has('embed'); // running inside the device preview frame
+if (embedded) document.documentElement.classList.add('embedded');
+if (['Management', 'HQ Executive', 'Depot In-charge'].includes(params.get('role'))) role = params.get('role');
 
 const $ = (selector) => document.querySelector(selector);
 
@@ -527,6 +531,14 @@ function renderChrome() {
   $('#role-label').textContent = t('viewAs');
   $('#role').innerHTML = ['Management', 'HQ Executive', 'Depot In-charge']
     .map((r) => `<option value="${r}" ${r === role ? 'selected' : ''}>${t('role.' + r)}</option>`).join('');
+  $('#device-label').textContent = t('dev.view');
+  ['phone', 'tablet'].forEach((size) => {
+    $('#dev-' + size).textContent = t('dev.' + size);
+    $('#stage-' + size).textContent = t('dev.' + size);
+  });
+  $('#stage-title').textContent = t('dev.title');
+  $('#stage-close').textContent = t('dev.close');
+  $('#device-frame').title = t('dev.title');
   document.querySelectorAll('[data-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
   const items = navItems();
   if (!items.some(([v]) => v === view)) view = items[0][0];
@@ -630,7 +642,9 @@ document.addEventListener('click', (e) => {
   const { action } = el.dataset;
   const id = Number(el.dataset.id);
 
-  if (action === 'nav') navigate(el.dataset.view);
+  if (action === 'device') openDevice(el.dataset.size);
+  else if (action === 'device-close') closeDevice();
+  else if (action === 'nav') navigate(el.dataset.view);
   else if (action === 'period') { setPeriod(el.dataset.period); page = 1; render(); }
   else if (action === 'toggle-more') { moreOpen = !moreOpen; render(); }
   else if (action === 'clear') { filters = defaultFilters(); page = 1; render(); }
@@ -741,6 +755,25 @@ document.addEventListener('submit', (e) => {
   else if (id === 'sub-form') addSubscription(e.target);
   else addCatalogItem(e.target, id === 'depot-form' ? 'depots' : 'heads');
 });
+
+function openDevice(size) {
+  const stage = $('#device-stage');
+  const frame = $('#device-frame');
+  $('#device').dataset.size = size;
+  document.querySelectorAll('.stage-sizes button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.size === size)));
+  if (stage.hidden) {
+    frame.src = `?embed=1&role=${encodeURIComponent(role)}`;
+    stage.hidden = false;
+    document.body.classList.add('staged');
+    $('#stage-close').focus();
+  }
+}
+function closeDevice() {
+  $('#device-stage').hidden = true;
+  $('#device-frame').removeAttribute('src');
+  document.body.classList.remove('staged');
+}
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#device-stage').hidden) closeDevice(); });
 
 function resetDemo() {
   if (!confirm(t('resetConfirm'))) return;

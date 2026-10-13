@@ -38,6 +38,11 @@
             <span id="role-label"></span>
             <select id="role"></select>
           </label>
+          <div class="device-pick" role="group" aria-labelledby="device-label">
+            <span id="device-label"></span>
+            <button type="button" data-action="device" data-size="phone" id="dev-phone"></button>
+            <button type="button" data-action="device" data-size="tablet" id="dev-tablet"></button>
+          </div>
           <div class="lang" role="group" aria-label="Language / ভাষা">
             <button type="button" data-lang="bn" lang="bn">বাংলা</button>
             <button type="button" data-lang="en" lang="en">English</button>
@@ -50,6 +55,17 @@
     </div>
   </div>
 
+  <div id="device-stage" hidden role="dialog" aria-modal="true" aria-labelledby="stage-title">
+    <div class="stage-bar">
+      <b id="stage-title"></b>
+      <div class="stage-sizes">
+        <button type="button" data-action="device" data-size="phone" id="stage-phone"></button>
+        <button type="button" data-action="device" data-size="tablet" id="stage-tablet"></button>
+      </div>
+      <button type="button" class="btn btn-small" data-action="device-close" id="stage-close"></button>
+    </div>
+    <div class="stage-body"><div class="device" id="device" data-size="phone"><iframe id="device-frame" title=""></iframe></div></div>
+  </div>
   <div id="toast" role="status" aria-live="polite"></div>
   <script src="i18n.js"></script>
   <script src="app.js"></script>

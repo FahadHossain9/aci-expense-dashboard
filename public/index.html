@@ -38,10 +38,10 @@
             <span id="role-label"></span>
             <select id="role"></select>
           </label>
-          <div class="device-pick" role="group" aria-labelledby="device-label">
-            <span id="device-label"></span>
-            <button type="button" data-action="device" data-size="phone" id="dev-phone"></button>
-            <button type="button" data-action="device" data-size="tablet" id="dev-tablet"></button>
+          <div class="device-pick" role="group" id="device-pick">
+            <button type="button" class="icon-btn" data-action="device" data-size="phone" id="dev-phone"></button>
+            <button type="button" class="icon-btn" data-action="device" data-size="tablet" id="dev-tablet"></button>
+            <button type="button" class="icon-btn" data-action="device" data-size="desktop" id="dev-desktop" aria-pressed="true"></button>
           </div>
           <div class="lang" role="group" aria-label="Language / ভাষা">
             <button type="button" data-lang="bn" lang="bn">বাংলা</button>
@@ -59,10 +59,11 @@
     <div class="stage-bar">
       <b id="stage-title"></b>
       <div class="stage-sizes">
-        <button type="button" data-action="device" data-size="phone" id="stage-phone"></button>
-        <button type="button" data-action="device" data-size="tablet" id="stage-tablet"></button>
+        <button type="button" class="icon-btn" data-action="device" data-size="phone" id="stage-phone"></button>
+        <button type="button" class="icon-btn" data-action="device" data-size="tablet" id="stage-tablet"></button>
+        <button type="button" class="icon-btn" data-action="device" data-size="desktop" id="stage-desktop"></button>
+        <button type="button" class="icon-btn" data-action="device-close" id="stage-close"></button>
       </div>
-      <button type="button" class="btn btn-small" data-action="device-close" id="stage-close"></button>
     </div>
     <div class="stage-body"><div class="device" id="device" data-size="phone"><iframe id="device-frame" title=""></iframe></div></div>
   </div>

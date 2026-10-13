@@ -87,6 +87,10 @@ function icon(nameOfIcon) {
     filter: '<path d="M4 6h16M7 12h10M10 18h4"/>',
     eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
     settings: '<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',
+    phone: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
+    tablet: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M11 17h2"/>',
+    desktop: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
+    close: '<path d="M6 6l12 12M18 6 6 18"/>',
     clip: '<path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5h6M9 13l2 2 4-4"/>',
   };
   return `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${paths[nameOfIcon] || ''}</svg>`;
@@ -531,13 +535,16 @@ function renderChrome() {
   $('#role-label').textContent = t('viewAs');
   $('#role').innerHTML = ['Management', 'HQ Executive', 'Depot In-charge']
     .map((r) => `<option value="${r}" ${r === role ? 'selected' : ''}>${t('role.' + r)}</option>`).join('');
-  $('#device-label').textContent = t('dev.view');
-  ['phone', 'tablet'].forEach((size) => {
-    $('#dev-' + size).textContent = t('dev.' + size);
-    $('#stage-' + size).textContent = t('dev.' + size);
-  });
+  ['dev', 'stage'].forEach((prefix) => ['phone', 'tablet', 'desktop'].forEach((size) => {
+    const button = $(`#${prefix}-${size}`);
+    button.innerHTML = icon(size);
+    button.title = t('dev.' + size);
+    button.setAttribute('aria-label', button.title);
+  }));
+  $('#stage-close').innerHTML = icon('close');
+  $('#stage-close').title = t('dev.close');
+  $('#stage-close').setAttribute('aria-label', t('dev.close'));
   $('#stage-title').textContent = t('dev.title');
-  $('#stage-close').textContent = t('dev.close');
   $('#device-frame').title = t('dev.title');
   document.querySelectorAll('[data-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
   const items = navItems();
@@ -642,7 +649,7 @@ document.addEventListener('click', (e) => {
   const { action } = el.dataset;
   const id = Number(el.dataset.id);
 
-  if (action === 'device') openDevice(el.dataset.size);
+  if (action === 'device') { if (el.dataset.size === 'desktop') closeDevice(); else openDevice(el.dataset.size); }
   else if (action === 'device-close') closeDevice();
   else if (action === 'nav') navigate(el.dataset.view);
   else if (action === 'period') { setPeriod(el.dataset.period); page = 1; render(); }
@@ -760,7 +767,7 @@ function openDevice(size) {
   const stage = $('#device-stage');
   const frame = $('#device-frame');
   $('#device').dataset.size = size;
-  document.querySelectorAll('.stage-sizes button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.size === size)));
+  setDeviceState(size);
   if (stage.hidden) {
     frame.src = `?embed=1&role=${encodeURIComponent(role)}`;
     stage.hidden = false;
@@ -768,7 +775,11 @@ function openDevice(size) {
     $('#stage-close').focus();
   }
 }
+function setDeviceState(size) {
+  document.querySelectorAll('[data-action="device"]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.size === size)));
+}
 function closeDevice() {
+  setDeviceState('desktop');
   $('#device-stage').hidden = true;
   $('#device-frame').removeAttribute('src');
   document.body.classList.remove('staged');

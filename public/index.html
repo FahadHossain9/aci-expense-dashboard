@@ -1,1 +1,57 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ACI Distribution Expense</title><link rel="stylesheet" href="style.css"></head><body><aside><a class="brand" href="#"><b>ACI</b><span>Distribution<br>Expense</span></a><small>WORKSPACE</small><nav id="nav"></nav><div class="aside-bottom"><span class="dot"></span> Presentation demo<p>Sample data · saved on this device</p><button id="reset">Reset demo data</button></div></aside><main><header><span>ACI Motors <span class="muted"> / Distribution Expense</span></span><label class="role-label">View as <select id="role"><option>Management</option><option>HQ Executive</option><option>Depot In-charge</option></select></label></header><div id="content"></div><footer>Demo workspace • No connection to ACI systems • Amounts in BDT</footer></main><div id="toast" role="status"></div><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f6b4f">
+  <title>ডিস্ট্রিবিউশন খরচ · ACI</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2716%27 fill=%27%230f6b4f%27/%3E%3Ctext x=%2732%27 y=%2742%27 font-size=%2726%27 font-family=%27Arial%27 font-weight=%27bold%27 fill=%27white%27 text-anchor=%27middle%27%3EACI%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#content" id="skip">মূল অংশে যান</a>
+
+  <div class="app">
+    <aside class="side">
+      <a class="brand" href="./" aria-label="ACI">
+        <span class="brand-mark">ACI</span>
+        <span class="brand-text"><b id="brand-company"></b><span id="brand-app"></span></span>
+      </a>
+      <nav id="nav" aria-label="Main"></nav>
+      <div class="side-foot">
+        <p><span class="dot" aria-hidden="true"></span><span id="demo-note"></span></p>
+        <button class="link-button" id="reset" type="button"></button>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="top">
+        <a class="brand brand-compact" href="./" aria-label="ACI">
+          <span class="brand-mark">ACI</span>
+          <span class="brand-text"><b id="brand-app-compact"></b></span>
+        </a>
+        <div class="top-controls">
+          <label class="role-pick">
+            <span id="role-label"></span>
+            <select id="role"></select>
+          </label>
+          <div class="lang" role="group" aria-label="Language / ভাষা">
+            <button type="button" data-lang="bn" lang="bn">বাংলা</button>
+            <button type="button" data-lang="en" lang="en">English</button>
+          </div>
+        </div>
+      </header>
+
+      <main id="content" tabindex="-1"></main>
+      <footer id="footer"></footer>
+    </div>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
